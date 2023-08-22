@@ -32,7 +32,7 @@ instance Show Simplex where
   show (Simplex xs) = "(" ++ intercalate "," (show <$> xs) ++ ")"
 
 instance Show SimplicialComplex where
-  show (SimplicialComplex _ xs) = show xs
+  show (SimplicialComplex _ xs) = "SimplicialComplex " ++ show xs
 
 instance Eq Simplex where
   (Simplex xs) == (Simplex ys) = sort xs == sort ys

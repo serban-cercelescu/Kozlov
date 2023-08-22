@@ -1,4 +1,18 @@
-module Graph where
+module Graph (
+    Graph,
+    edgeList,
+    noVertices,
+    newGraph,
+    newUndirected,
+    graphProduct,
+    morphismsList,
+    hasMorphism,
+    findMorphism,
+    toBoxComplex,
+    clique,
+    boxHomologySequence,
+    homologyProductPreserving
+) where
 
 import qualified Data.Map.Strict as Map
 import Data.Map.Strict (Map, (!))
@@ -20,6 +34,14 @@ instance Show Graph where
             forM_ js $ \j -> do
                 tell $ show i ++ " -> " ++ show j ++ "\n"
 
+edgeList :: Graph -> [(Int, Int)]
+edgeList (Graph _ edges) = do
+    (i, js) <- Map.toList edges
+    j <- js
+    return (i, j)
+
+noVertices :: Graph -> Int
+noVertices (Graph n _) = n
 
 newGraph :: Int -> [(Int, Int)] -> Graph
 newGraph n edges = Graph n ans where
@@ -70,6 +92,10 @@ morphismsList g1 g2 = bkt (Map.empty) 1 where
                 then bkt m' (i + 1)
                 else []
 
+findMorphism :: Graph -> Graph -> Maybe [(Int, Int)]
+findMorphism g1 g2 = case morphismsList g1 g2 of
+    [] -> Nothing
+    (x : _) -> Just x
 
 hasMorphism :: Graph -> Graph -> Bool
 hasMorphism g1 g2 = null $ morphismsList g1 g2 -- lazyness ftw
@@ -108,12 +134,6 @@ clique n = newGraph n [(i, j) | i <- [1 .. n], j <- [1 .. n], i /= j]
 boxHomologySequence :: Graph -> [[Integer]]
 boxHomologySequence = homologySequence . toBoxComplex
 
-
-homologyProductPreserving :: Graph -> Maybe Int
-homologyProductPreserving g
-    | (head gHomSeq == [0]) && length (filter (/= []) gHomSeq) == 2 = Just $ fst $ head $ filter ((/= []) . snd) $ tail $ zip [0..] gHomSeq
-    | otherwise = Nothing
-    where gHomSeq = boxHomologySequence g
 
 ------ TOOLS ------
 
