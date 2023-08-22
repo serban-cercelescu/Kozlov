@@ -1,6 +1,14 @@
 # Kozlov
 A package written to help with the investigation of graph constraint satisfcation problems using topological methods as in [this paper](https://arxiv.org/abs/2003.11351).
 
+I am not sure if this package works on anything but Linux.
+
+## For non-technical people
+You need to install the [haskell stack](https://docs.haskellstack.org/en/stable/) for this to work. Run the `app/Main.hs` file using the `stack run` command, enter ghci using the `stack ghci` command. If you need to create extra-modules, add them to the `src` folder.
+
+## For technical people
+Please ignore what I've just said above.
+
 ## Graph Module
 ### Graph Creation Functions
 - `newGraph :: Int -> [(Int, Int)] -> Graph` 

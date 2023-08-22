@@ -48,6 +48,8 @@ library:
   when:
     - condition: os(linux)
       extra-libraries: stdc++
+    - condition: os(darwin)
+      extra-libraries: c++
 
 executables:
   Kozlov-exe:
