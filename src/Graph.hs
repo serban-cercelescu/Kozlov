@@ -11,7 +11,6 @@ module Graph (
     toBoxComplex,
     clique,
     boxHomologySequence,
-    homologyProductPreserving
 ) where
 
 import qualified Data.Map.Strict as Map

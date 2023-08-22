@@ -99,7 +99,7 @@ public:
         else {
             vector<pair<int, i64>> row = get_row(src);
             for_each(
-                execution::par_unseq,
+                execution::unseq,
                 begin(row),
                 end(row),
                 [&](const pair<int, long long>& entry) {
@@ -113,7 +113,7 @@ public:
         set<int> rows = column_entries(src);
 
         for_each(
-            execution::par_unseq,
+            execution::unseq,
             begin(rows),
             end(rows),
             [&](const int &row) {
@@ -133,7 +133,7 @@ public:
         rows.merge(column_entries(trg));
 
         for_each(
-            execution::par_unseq,
+            execution::unseq,
             begin(rows),
             end(rows),
             [&](const int &row) {
@@ -149,7 +149,7 @@ public:
         auto it = mx.find(src);
         if (it != mx.end()) {
             for_each(
-                execution::par_unseq,
+                execution::unseq,
                 begin(it->second),
                 end(it->second),
                 [&](const auto& row_entry) {
@@ -167,7 +167,7 @@ public:
         rows.merge(column_entries(trg));
 
         for_each(
-            execution::par_unseq,
+            execution::unseq,
             begin(rows),
             end(rows),
             [&](const int &row) {
@@ -204,7 +204,7 @@ public:
 
     void set_column(int j, vector<pair<int, i64>> col) {
         for_each(
-            execution::par_unseq,
+            execution::unseq,
             begin(col),
             end(col),
             [&](const pair<int, i64>& entry) {
@@ -213,7 +213,7 @@ public:
         );
         
         for_each(
-            execution::par_unseq,
+            execution::unseq,
             begin(col),
             end(col),
             [&](const pair<int, i64>& entry) {
@@ -360,7 +360,7 @@ void optimize_pivot(Sparse &matrix, int t) { // ensures that matrix[t][t] is the
         matrix.set_row(t, {});
         matrix.set_row(i, {});
 
-        std::for_each(std::execution::par_unseq, row_t.begin(), row_t.end(), [&](auto &entry) {
+        std::for_each(std::execution::unseq, row_t.begin(), row_t.end(), [&](auto &entry) {
             int j = entry.first;
             i64 val_t = entry.second;
             i64 val_i = [&]() -> i64 {
@@ -378,7 +378,7 @@ void optimize_pivot(Sparse &matrix, int t) { // ensures that matrix[t][t] is the
             matrix.put(i, j, euclid_matrix[1][0] * val_t + euclid_matrix[1][1] * val_i);
         });
 
-        std::for_each(std::execution::par_unseq, row_i.begin(), row_i.end(), [&](auto &entry) {
+        std::for_each(std::execution::unseq, row_i.begin(), row_i.end(), [&](auto &entry) {
             int j = entry.first;
             i64 val_i = entry.second;
             i64 val_t = [&]() -> i64 {
@@ -419,7 +419,7 @@ void optimize_pivot(Sparse &matrix, int t) { // ensures that matrix[t][t] is the
         matrix.set_column(t, {});
         matrix.set_column(j, {});
 
-        std::for_each(std::execution::par_unseq, col_t.begin(), col_t.end(), [&](auto &entry) {
+        std::for_each(std::execution::unseq, col_t.begin(), col_t.end(), [&](auto &entry) {
             int i = entry.first;
             i64 val_t = entry.second;
             i64 val_j = [&]() -> i64 {
@@ -437,7 +437,7 @@ void optimize_pivot(Sparse &matrix, int t) { // ensures that matrix[t][t] is the
             matrix.put(i, j, euclid_matrix[1][0] * val_t + euclid_matrix[1][1] * val_j);
         });
 
-        std::for_each(std::execution::par_unseq, col_j.begin(), col_j.end(), [&](auto &entry) {
+        std::for_each(std::execution::unseq, col_j.begin(), col_j.end(), [&](auto &entry) {
             int i = entry.first;
             i64 val_j = entry.second;
             i64 val_t = [&]() -> i64 {
@@ -461,7 +461,7 @@ void optimize_pivot(Sparse &matrix, int t) { // ensures that matrix[t][t] is the
 void clear_columns(Sparse &matrix, int t) {
     set<int> columns = matrix.row_entries(t);
     i64 a = matrix.get(t, t);
-    for_each(execution::par_unseq, columns.begin(), columns.end(), [&](int j) {
+    for_each(execution::unseq, columns.begin(), columns.end(), [&](int j) {
         if (j > t) {
             i64 b = matrix.get(t, j);
             if (b == 0)
@@ -474,7 +474,7 @@ void clear_columns(Sparse &matrix, int t) {
 void clear_rows(Sparse &matrix, int t) {
     set<int> rows = matrix.column_entries(t);
     i64 a = matrix.get(t, t);
-    for_each(execution::par_unseq, rows.begin(), rows.end(), [&](int i) {
+    for_each(execution::unseq, rows.begin(), rows.end(), [&](int i) {
         if (i > t) {
             i64 b = matrix.get(i, t);
             if (b == 0)
